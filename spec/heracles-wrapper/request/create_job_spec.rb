@@ -44,11 +44,11 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
       stub_request(:post, subject.url.to_s).
       to_return(
         {
-          body: %({"job_id" : "#{expected_job_id}"}),
-          status: 201,
-          headers: {
-            content_type: 'application/json',
-            location: expected_job_location
+          :body => %({"job_id" : "#{expected_job_id}"}),
+          :status => 201,
+          :headers => {
+            :content_type => 'application/json',
+            :location => expected_job_location
           }
         }
       )
@@ -65,7 +65,7 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
     end
 
     it 'handles redirection' do
-      stub_request(:post, subject.url.to_s).to_return(status: 302)
+      stub_request(:post, subject.url.to_s).to_return(:status => 302)
       lambda {
         subject.call
       }.must_raise Heracles::Wrapper::RequestFailure

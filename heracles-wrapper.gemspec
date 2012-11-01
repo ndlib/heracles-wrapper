@@ -21,7 +21,8 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency "rest-client"
+  gem.add_runtime_dependency "rest-client"
+  gem.add_runtime_dependency "json" if RUBY_VERSION =~ /\A1\.8/
   gem.add_development_dependency "webmock"
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "minitest-matchers"

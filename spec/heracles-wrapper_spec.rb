@@ -35,11 +35,11 @@ describe 'Heracles::Wrapper' do
     end
 
     let(:expected_workflow_name) { 'MyWorkflowName' }
-    let(:expected_request_parameters) { { hello: 'World' } }
+    let(:expected_request_parameters) { { :hello => 'World' } }
     it 'has .build_request_for_create_job that responds to call' do
       request = subject.build_request_for_create_job(
-        workflow_name: expected_workflow_name,
-        parameters: expected_request_parameters
+        :workflow_name => expected_workflow_name,
+        :parameters => expected_request_parameters
       )
       request.parent_job_id.must_equal nil
       request.workflow_name.must_equal expected_workflow_name
