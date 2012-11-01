@@ -1,10 +1,10 @@
-gem 'rest-client'
-gem 'webmock'
-require 'rest-client'
-require 'webmock'
+require 'uri'
+require 'json'
 
 module Heracles
   module Wrapper
+    class RequestFailure < RuntimeError
+    end
     module Request
     end
   end
@@ -18,6 +18,10 @@ class Heracles::Wrapper::Request::CreateJob
     @parameters = parameters.freeze
   end
 
+  def url
+    URI.parse("https://heracles.library.nd.edu/jobs")
+  end
+
   def as_json
     {
       api_key: @api_key,
@@ -28,17 +32,55 @@ class Heracles::Wrapper::Request::CreateJob
     }
   end
 
+  # Need to accept a self-signed cert.
+  # Hits a given URL
+  # Syncrhonously waits for response.
   def call
-    # RestClient
-    # Need to accept a self-signed cert.
-    # Hits a given URL
-    # Syncrhonously waits for response.
+    response = RestClient.post(
+      url.to_s,
+      as_json,
+      {
+        content_type: :json,
+        accept: :json,
+        verify_ssl: OpenSSL::SSL::VERIFY_NONE
+      }
+    )
+    # This is dirty but it highlights the expected API.
+    def response.job_id
+      JSON.parse(body)['job_id'].to_i
+    end
+
+    def response.location
+      headers.fetch(:location)
+    end
+    response
+  rescue RestClient::Exception => e
+    raise Heracles::Wrapper::RequestFailure.new(e)
   end
 end
 
 if __FILE__ == $0
+  gem 'rest-client'
+  gem 'webmock'
+  gem 'minitest'
+  gem 'minitest-matchers'
+  gem 'debugger'
   require 'minitest/autorun'
+  require 'rest-client'
+  require 'webmock'
+  require 'webmock/minitest'
+
+
   describe 'Heracles::Wrapper::Request::CreateJob' do
+    require 'webmock/minitest'
+
+    before(:all) do
+      ::WebMock.disable_net_connect!
+    end
+    after(:all) do
+      ::WebMock.allow_net_connect!
+    end
+
     subject { Heracles::Wrapper::Request::CreateJob.new(*args) }
     let(:expected_api_key) { '12345678901234567890123456789012' }
     let(:expected_workflow_name) { 'RabbitWarren' }
@@ -54,20 +96,45 @@ if __FILE__ == $0
     let(:options) { {} }
 
     describe "#call" do
-      before do
-        stub_request(:get, subject.url).
-        to_return(
-          {
-            body: %w({"hello" : "world"}),
-            status: 302,
-            headers: { content_type: 'application/json' }
-          }
-        )
-      end
+      let(:expected_job_id) { 123 }
+      let(:expected_job_location) {
+        File.join(subject.url.to_s, expected_job_id.to_s)
+      }
 
       it 'makes remote call and waits for response' do
-        subject.call.code.should == 302
+        stub_request(:post, subject.url.to_s).
+        to_return(
+          {
+            body: %({"job_id" : "#{expected_job_id}"}),
+            status: 201,
+            headers: {
+              content_type: 'application/json',
+              location: expected_job_location
+            }
+          }
+        )
+        subject.call.code.must_equal 201
+        subject.call.job_id.must_equal expected_job_id.to_i
+        subject.call.location.must_equal expected_job_location
       end
+
+      it 'handles timeout' do
+        stub_request(:post, subject.url.to_s).to_timeout
+        lambda {
+          subject.call
+        }.must_raise Heracles::Wrapper::RequestFailure
+      end
+
+      it 'handles redirection' do
+        stub_request(:post, subject.url.to_s).to_return(status: 302)
+        lambda {
+          subject.call
+        }.must_raise Heracles::Wrapper::RequestFailure
+      end
+    end
+
+    it 'has a URL' do
+      subject.url.must_be_kind_of URI
     end
 
     describe "#as_json" do
