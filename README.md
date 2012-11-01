@@ -18,9 +18,20 @@ Or install it yourself as:
 
     $ gem install heracles-wrapper
 
+Get your Heracles API key
+
+Once installed in your application use rails generate:
+
+    rails generate heracles:wrapper:install -k <API_KEY_FROM_HERACLES>
+
 ## Usage
 
-
+    Heracles::Wrapper.build_request_for_create_job(
+      :workflow_name => 'RabbitWarren',
+      :parameters => {
+        :callback_url => 'http://google.com'
+      }
+    )
 
 ## Contributing
 
