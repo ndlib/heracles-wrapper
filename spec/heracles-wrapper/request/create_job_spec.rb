@@ -97,9 +97,9 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
       it 'has #as_json' do
         subject.as_json.must_equal(
           {
-            api_key: expected_api_key,
-            workflow_name: expected_workflow_name,
-            parameters: {}
+            :api_key => expected_api_key,
+            :workflow_name => expected_workflow_name,
+            :parameters => {}
           }
         )
       end
@@ -110,10 +110,10 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
       it 'has #as_json' do
         subject.as_json.must_equal(
           {
-            api_key: expected_api_key,
-            workflow_name: expected_workflow_name,
-            parent_job_id: expected_parent_job_id,
-            parameters: {}
+            :api_key => expected_api_key,
+            :workflow_name => expected_workflow_name,
+            :parent_job_id => expected_parent_job_id,
+            :parameters => {}
           }
         )
       end
@@ -122,17 +122,17 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
     describe 'with additional parameters' do
       let(:expected_callback_url) { 'my callback_url' }
       let(:options) {
-        { callback_url: expected_callback_url, system_number: '1234' }
+        { :callback_url => expected_callback_url, :system_number => '1234' }
       }
       it 'has #as_json' do
         subject.as_json.must_equal(
           {
-            api_key: expected_api_key,
-            workflow_name: expected_workflow_name,
-            parameters:
+            :api_key => expected_api_key,
+            :workflow_name => expected_workflow_name,
+            :parameters =>
             {
-              callback_url: expected_callback_url,
-              system_number: options[:system_number]
+              :callback_url => expected_callback_url,
+              :system_number => options[:system_number]
             }
           }
         )

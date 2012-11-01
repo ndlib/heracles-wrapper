@@ -14,7 +14,7 @@ class Heracles::Wrapper::Request
   def as_json
     returning_value = {}
     returning_value[:request] = attributes.merge(
-      { callback_url: callback_url }
+      { :callback_url => callback_url }
     )
     returning_value
   end
@@ -35,9 +35,9 @@ if __FILE__ == $0
       it 'has #as_json' do
         subject.as_json.must_equal(
           {
-            request:
+            :request =>
             {
-              callback_url: expected_callback_url
+              :callback_url => expected_callback_url
             }
           }
         )
@@ -49,10 +49,10 @@ if __FILE__ == $0
       it 'has #as_json' do
         subject.as_json.must_equal(
           {
-            request:
+            :request =>
             {
-              callback_url: expected_callback_url,
-              system_number: options[:system_number]
+              :callback_url => expected_callback_url,
+              :system_number => options[:system_number]
             }
           }
         )

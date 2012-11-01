@@ -30,9 +30,9 @@ class Heracles::Wrapper::Request::CreateJob
 
   def as_json
     {
-      api_key: @config.api_key,
-      workflow_name: @workflow_name,
-      parameters: @parameters
+      :api_key => @config.api_key,
+      :workflow_name => @workflow_name,
+      :parameters => @parameters
     }.tap {|hash|
       hash[:parent_job_id] = @parent_job_id if @parent_job_id
     }
@@ -47,9 +47,9 @@ class Heracles::Wrapper::Request::CreateJob
         url.to_s,
         as_json,
         {
-          content_type: :json,
-          accept: :json,
-          verify_ssl: OpenSSL::SSL::VERIFY_NONE
+          :content_type => :json,
+          :accept => :json,
+          :verify_ssl => OpenSSL::SSL::VERIFY_NONE
         }
       )
     )
