@@ -76,6 +76,22 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
     subject.url.must_be_kind_of URI
   end
 
+  it 'has #parameters' do
+    subject.parameters.must_be_kind_of Hash
+  end
+
+  it 'has #config' do
+    subject.must_respond_to :config
+  end
+
+  it 'has #parent_job_id' do
+    subject.must_respond_to :parent_job_id
+  end
+
+  it 'has #workflow_name' do
+    subject.must_respond_to :workflow_name
+  end
+
   describe "#as_json" do
     describe 'bare metal' do
       it 'has #as_json' do

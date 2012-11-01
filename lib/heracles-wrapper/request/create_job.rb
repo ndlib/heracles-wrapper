@@ -12,6 +12,11 @@ module Heracles
 end
 
 class Heracles::Wrapper::Request::CreateJob
+  attr_reader :config,
+    :parent_job_id,
+    :workflow_name,
+    :parameters
+
   def initialize(config, workflow_name, parent_job_id, parameters = {})
     @config = config
     @workflow_name = workflow_name
