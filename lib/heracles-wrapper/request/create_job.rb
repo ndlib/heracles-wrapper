@@ -36,15 +36,22 @@ class Heracles::Wrapper::Request::CreateJob
   # Hits a given URL
   # Syncrhonously waits for response.
   def call
-    response = RestClient.post(
-      url.to_s,
-      as_json,
-      {
-        content_type: :json,
-        accept: :json,
-        verify_ssl: OpenSSL::SSL::VERIFY_NONE
-      }
+    decorate_response(
+      RestClient.post(
+        url.to_s,
+        as_json,
+        {
+          content_type: :json,
+          accept: :json,
+          verify_ssl: OpenSSL::SSL::VERIFY_NONE
+        }
+      )
     )
+  rescue RestClient::Exception => e
+    raise Heracles::Wrapper::RequestFailure.new(e)
+  end
+  protected
+  def decorate_response(response)
     # This is dirty but it highlights the expected API.
     def response.job_id
       JSON.parse(body)['job_id'].to_i
@@ -54,8 +61,6 @@ class Heracles::Wrapper::Request::CreateJob
       headers.fetch(:location)
     end
     response
-  rescue RestClient::Exception => e
-    raise Heracles::Wrapper::RequestFailure.new(e)
   end
 end
 
