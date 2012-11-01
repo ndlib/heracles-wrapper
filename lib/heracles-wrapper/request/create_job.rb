@@ -1,5 +1,8 @@
 gem 'rest-client'
+gem 'webmock'
 require 'rest-client'
+require 'webmock'
+
 module Heracles
   module Wrapper
     module Request
@@ -26,7 +29,7 @@ class Heracles::Wrapper::Request::CreateJob
   end
 
   def call
-    RestClient
+    # RestClient
     # Need to accept a self-signed cert.
     # Hits a given URL
     # Syncrhonously waits for response.
@@ -49,6 +52,23 @@ if __FILE__ == $0
       ]
     }
     let(:options) { {} }
+
+    describe "#call" do
+      before do
+        stub_request(:get, subject.url).
+        to_return(
+          {
+            body: %w({"hello" : "world"}),
+            status: 302,
+            headers: { content_type: 'application/json' }
+          }
+        )
+      end
+
+      it 'makes remote call and waits for response' do
+        subject.call.code.should == 302
+      end
+    end
 
     describe "#as_json" do
       describe 'bare metal' do
