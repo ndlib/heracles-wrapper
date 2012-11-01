@@ -1,6 +1,6 @@
 # Heracles::Wrapper
 
-[![Build Status](https://secure.travis-ci.org/jeremyf/diaspora-cluster-creator.png)](http://travis-ci.org/ndlib/heracles-wrapper)
+[![Build Status](https://secure.travis-ci.org/ndlib/heracles-wrapper.png)](http://travis-ci.org/ndlib/heracles-wrapper)
 
 API Wrapper for Heracles workflow manager
 

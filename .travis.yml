@@ -1,0 +1,14 @@
+language: ruby
+bundler_args: --without development
+script: "bundle exec rake spec"
+rvm:
+  - 1.9.3
+gemfile:
+  - Gemfile
+notifications:
+  email:
+    recipients:
+      - jfriesen@nd.edu
+branches:
+  only:
+    - master
