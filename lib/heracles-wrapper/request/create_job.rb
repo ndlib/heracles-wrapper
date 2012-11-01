@@ -12,20 +12,20 @@ module Heracles
 end
 
 class Heracles::Wrapper::Request::CreateJob
-  def initialize(api_key, workflow_name, parent_job_id, parameters = {})
-    @api_key = api_key
+  def initialize(config, workflow_name, parent_job_id, parameters = {})
+    @config = config
     @workflow_name = workflow_name
     @parent_job_id = parent_job_id
     @parameters = parameters.freeze
   end
 
   def url
-    URI.parse("https://heracles.library.nd.edu/jobs")
+    URI.parse(File.join(@config.heracles_base_url, 'jobs'))
   end
 
   def as_json
     {
-      api_key: @api_key,
+      api_key: @config.api_key,
       workflow_name: @workflow_name,
       parameters: @parameters
     }.tap {|hash|

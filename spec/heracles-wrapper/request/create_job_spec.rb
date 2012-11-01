@@ -1,6 +1,7 @@
 require File.expand_path(
   '../../../../lib/heracles-wrapper/request/create_job', __FILE__
 )
+require File.expand_path('../../../../lib/heracles-wrapper/config', __FILE__)
 require 'minitest/autorun'
 require 'webmock/minitest'
 
@@ -15,12 +16,17 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
   end
 
   subject { Heracles::Wrapper::Request::CreateJob.new(*args) }
+  let(:config) {
+    Heracles::Wrapper::Config.new {|c|
+      c.api_key = expected_api_key
+    }
+  }
   let(:expected_api_key) { '12345678901234567890123456789012' }
   let(:expected_workflow_name) { 'RabbitWarren' }
   let(:expected_parent_job_id) { nil }
   let(:args) {
     [
-      expected_api_key,
+      config,
       expected_workflow_name,
       expected_parent_job_id,
       options
@@ -66,7 +72,7 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
     end
   end
 
-  it 'has a URL' do
+  it 'has a #url' do
     subject.url.must_be_kind_of URI
   end
 
