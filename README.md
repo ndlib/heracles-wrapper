@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/ndlib/heracles-wrapper.png)](http://travis-ci.org/ndlib/heracles-wrapper)
 
-API Wrapper for Heracles workflow manager
+API Wrapper for [Heracles](https://github.com/ndlib/heracles) workflow manager.
 
 ## Installation
 
