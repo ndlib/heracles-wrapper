@@ -19,7 +19,7 @@ describe Heracles::Wrapper::TestHelper do
     it 'should be non destructive to the caller' do
       @original_create_job_service = Heracles::Wrapper.create_job_service
 
-      with_heracles_service_stub do
+      with_heracles_service_stub(:create_job) do
         @original_create_job_service.wont_be_same_as(
           Heracles::Wrapper.create_job_service
         )
@@ -57,7 +57,7 @@ describe Heracles::Wrapper::TestHelper do
     end
     it 'should respond like other systems' do
       @stubbed_response = nil
-      with_heracles_service_stub do
+      with_heracles_service_stub(:create_job) do
         @stubbed_response = Heracles::Wrapper.service(
           :create_job, input_parameters
         )
