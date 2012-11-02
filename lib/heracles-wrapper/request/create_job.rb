@@ -1,11 +1,10 @@
 require 'uri'
 require 'json'
 require 'rest-client'
+require File.expand_path("../exceptions", File.dirname(__FILE__))
 
 module Heracles
   module Wrapper
-    class RequestFailure < RuntimeError
-    end
     module Request
     end
   end

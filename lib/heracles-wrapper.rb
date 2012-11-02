@@ -1,5 +1,6 @@
 require File.expand_path("heracles-wrapper/version", File.dirname(__FILE__))
 require File.expand_path("heracles-wrapper/config", File.dirname(__FILE__))
+require File.expand_path("heracles-wrapper/exceptions", File.dirname(__FILE__))
 require File.expand_path("heracles-wrapper/request/create_job", File.dirname(__FILE__))
 
 module Heracles
