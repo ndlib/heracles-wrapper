@@ -2,11 +2,9 @@ require File.expand_path("heracles-wrapper/version", File.dirname(__FILE__))
 require File.expand_path("heracles-wrapper/config", File.dirname(__FILE__))
 require File.expand_path("heracles-wrapper/exceptions", File.dirname(__FILE__))
 require File.expand_path("heracles-wrapper/request/create_job", File.dirname(__FILE__))
-
+require 'morphine'
 module Heracles
   module Wrapper
-    class ConfigurationError < RuntimeError
-    end
     module_function
     def configure(&block)
       @config = Config.new(&block)
@@ -30,10 +28,14 @@ module Heracles
       workflow_name = options.fetch(:workflow_name)
       parent_job_id = options.fetch(:parent_job_id, nil)
       parameters = options.fetch(:parameters, {})
-      Heracles::Wrapper::Request::CreateJob.new(
-        config, workflow_name, parent_job_id, parameters
-      )
+      create_job_service.call(config,workflow_name,parent_job_id,parameters)
     end
-
+    class << self
+      include Morphine
+      private
+      register :create_job_service do
+        Heracles::Wrapper::Request::CreateJob.method(:new)
+      end
+    end
   end
 end
