@@ -26,7 +26,8 @@ Once installed in your application use rails generate:
 
 ## Usage
 
-    Heracles::Wrapper.build_request_for_create_job(
+    Heracles::Wrapper.service(
+      :create_job,
       :workflow_name => 'RabbitWarren',
       :parameters => {
         :callback_url => 'http://google.com'
@@ -41,8 +42,8 @@ Once installed in your application use rails generate:
       include Heracles::Wrapper::TestHelper
 
       it 'should wrap the API' do
-        with_stub_for_build_request_for_create_job(:job_id => 1234) do
-          service = Heracles::Wrapper.build_request_for_create_job(
+        with_heracles_service_stub(:create_job) do
+          service = Heracles::Wrapper.service(
             :create_job,
             :workflow_name => 'RabbitWarren',
             :parameters => {
@@ -50,7 +51,7 @@ Once installed in your application use rails generate:
             }
           )
 
-          service.call.job_id.must_equal 1234
+          service.call.job_id.must_be_kind_of Fixnum
         end
       end
     end

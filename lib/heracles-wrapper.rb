@@ -24,8 +24,8 @@ module Heracles
       @config = nil
     end
 
-    def build_request_for_create_job(options = {})
-      create_job_service.call(config,options)
+    def service(service_name, options = {})
+      send("#{service_name}_service").call(config,options)
     end
     class << self
       include Morphine

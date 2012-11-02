@@ -15,11 +15,11 @@ describe Heracles::Wrapper::TestHelper do
     ::WebMock.allow_net_connect!
   end
 
-  describe "with_stub_for_build_request_for_create_job" do
+  describe "with_heracles_service_stub" do
     it 'should be non destructive to the caller' do
       @original_create_job_service = Heracles::Wrapper.create_job_service
 
-      with_stub_for_build_request_for_create_job do
+      with_heracles_service_stub do
         @original_create_job_service.wont_be_same_as(
           Heracles::Wrapper.create_job_service
         )
@@ -57,14 +57,16 @@ describe Heracles::Wrapper::TestHelper do
     end
     it 'should respond like other systems' do
       @stubbed_response = nil
-      with_stub_for_build_request_for_create_job do
-        @stubbed_response = Heracles::Wrapper.
-          build_request_for_create_job(input_parameters)
+      with_heracles_service_stub do
+        @stubbed_response = Heracles::Wrapper.service(
+          :create_job, input_parameters
+        )
       end
 
       stub_live_http_request
-      @full_response = Heracles::Wrapper.
-        build_request_for_create_job(input_parameters)
+      @full_response = Heracles::Wrapper.service(
+          :create_job, input_parameters
+        )
 
       @stubbed_response.config.must_equal @full_response.config
       @stubbed_response.workflow_name.must_equal @full_response.workflow_name
