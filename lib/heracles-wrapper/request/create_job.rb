@@ -3,6 +3,7 @@ require 'json'
 require 'rest-client'
 require File.expand_path("../exceptions", File.dirname(__FILE__))
 
+
 module Heracles
   module Wrapper
     module Request
@@ -11,29 +12,28 @@ module Heracles
 end
 
 class Heracles::Wrapper::Request::CreateJob
-  attr_reader :config,
-    :parent_job_id,
+  attr_reader(
+    :config,
     :workflow_name,
-    :parameters
-
+    :parent_job_id,
+    :parameters,
+    :url
+  )
   def initialize(config, options = {})
     @config = config
     @workflow_name = options.fetch(:workflow_name)
     @parent_job_id = options.fetch(:parent_job_id, nil)
     @parameters = options.fetch(:parameters, {})
-  end
-
-  def url
-    URI.parse(File.join(@config.heracles_base_url, 'jobs'))
+    @url = URI.parse(File.join(config.heracles_base_url, 'jobs'))
   end
 
   def as_json
     {
-      :api_key => @config.api_key,
-      :workflow_name => @workflow_name,
-      :parameters => @parameters
+      :api_key => config.api_key,
+      :workflow_name => workflow_name,
+      :parameters => parameters
     }.tap {|hash|
-      hash[:parent_job_id] = @parent_job_id if @parent_job_id
+      hash[:parent_job_id] = parent_job_id if parent_job_id
     }
   end
 
