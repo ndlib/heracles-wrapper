@@ -6,8 +6,10 @@ module Heracles
       def initialize
         yield(self) if block_given?
       end
+
+      attr_writer :heracles_base_url
       def heracles_base_url
-        Heracles::Wrapper::HERACLES_BASE_URL
+        @heracles_base_url || Heracles::Wrapper::HERACLES_BASE_URL
       end
     end
   end

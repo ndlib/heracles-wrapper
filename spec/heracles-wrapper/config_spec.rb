@@ -14,4 +14,11 @@ describe 'Heracles::Wrapper::Config' do
   it 'should have heracles base url' do
     subject.heracles_base_url.must_equal Heracles::Wrapper::HERACLES_BASE_URL
   end
+
+  it 'should allow heracles_base_url to be overwritten' do
+    expected_url = 'http://google.com'
+    subject.heracles_base_url.must_equal Heracles::Wrapper::HERACLES_BASE_URL
+    subject.heracles_base_url = expected_url
+    subject.heracles_base_url.must_equal expected_url
+  end
 end
