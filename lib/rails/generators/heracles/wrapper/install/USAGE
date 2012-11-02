@@ -1,8 +1,8 @@
 Description:
-    Explain the generator
+    Generate the config for Heracles
 
 Example:
-    rails generate install Thing
+    rails generate heracles:wrapper:install -k <API_KEY_FOR_HERACLES>
 
     This will create:
-        what/will/it/create
+        config/initializers/heracles-wrapper.rb
