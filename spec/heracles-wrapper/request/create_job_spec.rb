@@ -15,7 +15,7 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
     ::WebMock.allow_net_connect!
   end
 
-  subject { Heracles::Wrapper::Request::CreateJob.new(*args) }
+  subject { Heracles::Wrapper::Request::CreateJob.new(config, options) }
   let(:config) {
     Heracles::Wrapper::Config.new {|c|
       c.api_key = expected_api_key
@@ -24,15 +24,12 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
   let(:expected_api_key) { '12345678901234567890123456789012' }
   let(:expected_workflow_name) { 'RabbitWarren' }
   let(:expected_parent_job_id) { nil }
-  let(:args) {
-    [
-      config,
-      expected_workflow_name,
-      expected_parent_job_id,
-      options
-    ]
+  let(:options) {
+    {
+      :workflow_name => expected_workflow_name,
+      :parent_job_id => expected_parent_job_id,
+    }
   }
-  let(:options) { {} }
 
   describe "#call" do
     let(:expected_job_id) { 123 }
@@ -122,18 +119,21 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
     describe 'with additional parameters' do
       let(:expected_callback_url) { 'my callback_url' }
       let(:options) {
-        { :callback_url => expected_callback_url, :system_number => '1234' }
+        {
+          :workflow_name => expected_workflow_name,
+          :parent_job_id => expected_parent_job_id,
+          :parameters => {
+            :callback_url => expected_callback_url,
+            :system_number => '1234'
+          }
+        }
       }
       it 'has #as_json' do
         subject.as_json.must_equal(
           {
             :api_key => expected_api_key,
             :workflow_name => expected_workflow_name,
-            :parameters =>
-            {
-              :callback_url => expected_callback_url,
-              :system_number => options[:system_number]
-            }
+            :parameters => options[:parameters]
           }
         )
       end

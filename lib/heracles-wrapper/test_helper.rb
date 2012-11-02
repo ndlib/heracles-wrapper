@@ -9,12 +9,12 @@ module Heracles
       def with_stub_for_build_request_for_create_job
         old_service = Heracles::Wrapper.create_job_service
         Heracles::Wrapper.create_job_service =
-        lambda { |config,workflow_name,parent_job_id,parameters|
+        lambda { |config,options|
           OpenStruct.new(
             :config => config,
-            :workflow_name => workflow_name,
-            :parent_job_id => parent_job_id,
-            :parameters => parameters,
+            :workflow_name => options.fetch(:workflow_name),
+            :parent_job_id => options.fetch(:parent_job_id, nil),
+            :parameters => options.fetch(:parameters, {}),
             :call => OpenStruct.new(
               :code => RESPONSE_CODE,
               :job_id => RESPONSE_JOB_ID,

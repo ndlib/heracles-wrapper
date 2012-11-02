@@ -25,10 +25,7 @@ module Heracles
     end
 
     def build_request_for_create_job(options = {})
-      workflow_name = options.fetch(:workflow_name)
-      parent_job_id = options.fetch(:parent_job_id, nil)
-      parameters = options.fetch(:parameters, {})
-      create_job_service.call(config,workflow_name,parent_job_id,parameters)
+      create_job_service.call(config,options)
     end
     class << self
       include Morphine

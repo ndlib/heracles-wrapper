@@ -16,11 +16,11 @@ class Heracles::Wrapper::Request::CreateJob
     :workflow_name,
     :parameters
 
-  def initialize(config, workflow_name, parent_job_id, parameters = {})
+  def initialize(config, options = {})
     @config = config
-    @workflow_name = workflow_name
-    @parent_job_id = parent_job_id
-    @parameters = parameters.freeze
+    @workflow_name = options.fetch(:workflow_name)
+    @parent_job_id = options.fetch(:parent_job_id, nil)
+    @parameters = options.fetch(:parameters, {})
   end
 
   def url
