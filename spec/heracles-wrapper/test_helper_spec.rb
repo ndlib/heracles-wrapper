@@ -37,6 +37,10 @@ describe Heracles::Wrapper::TestHelper do
         }
       }
     }
+    let(:expected_job_id) { 1234 }
+    let(:expected_code) { 201 }
+    let(:expected_location) { "http://somewhere/jobs/#{expected_job_id}"}
+
     def stub_live_http_request
       stub_request(
         :post,
@@ -44,20 +48,25 @@ describe Heracles::Wrapper::TestHelper do
       ).
       to_return(
         {
-          :body => %({"job_id" : "#{
-                          Heracles::Wrapper::TestHelper::RESPONSE_JOB_ID
-          }"}),
-          :status => Heracles::Wrapper::TestHelper::RESPONSE_CODE,
+          :body => %({"job_id" : "#{expected_job_id}"}),
+          :status => expected_code,
           :headers => {
             :content_type => 'application/json',
-            :location => Heracles::Wrapper::TestHelper::RESPONSE_LOCATION
+            :location => expected_location
           }
         }
       )
     end
+    let(:expected_response) {
+      {
+        :job_id => expected_job_id,
+        :code => expected_code,
+        :location => expected_location
+      }
+    }
     it 'should respond like other systems' do
       @stubbed_response = nil
-      with_heracles_service_stub(:create_job) do
+      with_heracles_service_stub(:create_job, expected_response) do
         @stubbed_response = Heracles::Wrapper.service(
           :create_job, input_parameters
         )
@@ -65,8 +74,8 @@ describe Heracles::Wrapper::TestHelper do
 
       stub_live_http_request
       @full_response = Heracles::Wrapper.service(
-          :create_job, input_parameters
-        )
+        :create_job, input_parameters
+      )
 
       @stubbed_response.config.must_equal @full_response.config
       @stubbed_response.workflow_name.must_equal @full_response.workflow_name

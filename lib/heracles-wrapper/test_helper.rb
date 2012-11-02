@@ -9,9 +9,6 @@ module Heracles::Wrapper
     # Presently I'm leaning on the implementation details of :create_job
     # for returning the API.
     def with_heracles_service_stub(service_name, response = {})
-      response_code = response.fetch(:code, RESPONSE_CODE)
-      response_job_id = response.fetch(:job_id, RESPONSE_JOB_ID)
-      response_location = response.fetch(:location, RESPONSE_LOCATION)
       old_service = Heracles::Wrapper.send("#{service_name}_service")
       Heracles::Wrapper.send(
         "#{service_name}_service=",
@@ -21,11 +18,7 @@ module Heracles::Wrapper
             :workflow_name => options.fetch(:workflow_name),
             :parent_job_id => options.fetch(:parent_job_id, nil),
             :parameters => options.fetch(:parameters, {}),
-            :call => OpenStruct.new(
-              :code => response_code,
-              :job_id => response_job_id,
-              :location => response_location
-            )
+            :call => OpenStruct.new(response)
           )
         }
       )
