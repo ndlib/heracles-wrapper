@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "rest-client"
+  gem.add_runtime_dependency "morphine"
   gem.add_runtime_dependency "json" if RUBY_VERSION =~ /\A1\.8/
   gem.add_development_dependency "webmock"
   gem.add_development_dependency "minitest"
