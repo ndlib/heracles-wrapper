@@ -9,11 +9,17 @@ require 'ostruct'
 describe 'Heracles::Wrapper::Request::SuccessfulResponse' do
   subject { Heracles::Wrapper::Request::SuccessfulResponse.new(http_response) }
   let(:expected_job_id) { 1234 }
+  let(:expected_messages) { ['one message'] }
   let(:expected_code) { 201 }
   let(:expected_location) { 'http://somewhere.over/the/rainbown' }
   let(:http_response) {
     OpenStruct.new(
-      :body => %({"job_id": #{expected_job_id}}),
+      :body => %(
+        {
+          "job_id": #{expected_job_id},
+          "messages": #{expected_messages}
+        }
+      ),
       :headers => { location: expected_location },
       :code => expected_code
     ).tap { |obj|
@@ -31,6 +37,10 @@ describe 'Heracles::Wrapper::Request::SuccessfulResponse' do
 
   it 'has #location' do
     subject.location.must_equal expected_location
+  end
+
+  it 'has #messages' do
+    subject.messages.must_equal expected_messages
   end
 
   it 'delegates everything else to the http_response' do

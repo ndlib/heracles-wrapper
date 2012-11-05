@@ -10,11 +10,14 @@ module Heracles
         attr_reader(
           :job_id,
           :location,
+          :messages,
           :code
         )
         def initialize(http_response)
           super(http_response)
-          @job_id = JSON.parse(http_response.body).fetch('job_id').to_i
+          @json = JSON.parse(http_response.body)
+          @job_id = @json.fetch('job_id').to_i
+          @messages = @json.fetch('messages',[]).to_a
           @location = http_response.headers.fetch(:location)
           @code = http_response.code
         end
