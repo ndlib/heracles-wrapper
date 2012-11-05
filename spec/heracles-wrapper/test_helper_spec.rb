@@ -15,7 +15,28 @@ describe Heracles::Wrapper::TestHelper do
     ::WebMock.allow_net_connect!
   end
 
-  describe "with_heracles_service_stub" do
+  let(:input_parameters) {
+    {
+      :workflow_name => 'TacoBuilder',
+      :parameters => {
+        :hello => 'world'
+      }
+    }
+  }
+
+  describe '#with_heracles_service_failure_stub' do
+    let(:expected_message) {'No Soup For You'}
+    it 'should require expected message' do
+      with_heracles_service_failure_stub(:create_job, [expected_message]) do
+        caller = Heracles::Wrapper.service(:create_job, input_parameters)
+        lambda {
+          value = caller.call
+        }.must_raise(Heracles::Wrapper::RequestFailure, /#{expected_message}/)
+      end
+    end
+  end
+
+  describe "#with_heracles_service_stub" do
     it 'should return an object that adheres to successful_response' do
       with_heracles_service_stub(:create_job) do
         @response = Heracles::Wrapper.service(
@@ -41,14 +62,6 @@ describe Heracles::Wrapper::TestHelper do
         @original_create_job_service
       )
     end
-    let(:input_parameters) {
-      {
-        :workflow_name => 'TacoBuilder',
-        :parameters => {
-          :hello => 'world'
-        }
-      }
-    }
     let(:expected_job_id) { 1234 }
     let(:expected_code) { 201 }
     let(:expected_location) { "http://somewhere/jobs/#{expected_job_id}"}
