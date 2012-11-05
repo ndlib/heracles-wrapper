@@ -40,17 +40,26 @@ Once installed in your application use rails generate:
 
     describe YourObject do
       include Heracles::Wrapper::TestHelper
+      let(:service) {
+        Heracles::Wrapper.service(
+          :create_job,
+          :workflow_name => 'RabbitWarren',
+          :parameters => {
+            :callback_url => 'http://google.com'
+          }
+        )
+      }
+
+      it 'should wrap the API with failing calls' do
+        with_heracles_service_failure_stub(:create_job, 'Failure') do
+          lambda {
+            service.call
+          }.must_raise(Heracles::Wrapper::RequestFailure, /Failure/)
+        end
+      end
 
       it 'should wrap the API' do
         with_heracles_service_stub(:create_job) do
-          service = Heracles::Wrapper.service(
-            :create_job,
-            :workflow_name => 'RabbitWarren',
-            :parameters => {
-              :callback_url => 'http://google.com'
-            }
-          )
-
           service.call.job_id.must_be_kind_of Fixnum
         end
       end
