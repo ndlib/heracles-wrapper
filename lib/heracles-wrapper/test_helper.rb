@@ -4,12 +4,17 @@ module Heracles::Wrapper
   module TestHelper
     RESPONSE_JOB_ID = 1234.freeze
     RESPONSE_CODE = 201.freeze
-    RESPONSE_LOCATION = "http://localhost:8080/jobs/#{RESPONSE_JOB_ID}".freeze
 
     # Presently I'm leaning on the implementation details of :create_job
     # for returning the API.
     def with_heracles_service_stub(service_name, response = {})
       old_service = Heracles::Wrapper.send("#{service_name}_service")
+
+      response[:job_id] ||= RESPONSE_JOB_ID
+      response[:location] ||= "http://localhost:8080/jobs/#{response[:job_id]}"
+      response[:code] ||= RESPONSE_CODE
+      response[:messages] ||= []
+
       Heracles::Wrapper.send(
         "#{service_name}_service=",
         lambda { |config,options|

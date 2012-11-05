@@ -16,6 +16,18 @@ describe Heracles::Wrapper::TestHelper do
   end
 
   describe "with_heracles_service_stub" do
+    it 'should return an object that adheres to successful_response' do
+      with_heracles_service_stub(:create_job) do
+        @response = Heracles::Wrapper.service(
+          :create_job, input_parameters
+        ).call
+        @response.job_id.must_be_kind_of Fixnum
+        @response.messages.must_be_kind_of Array
+        @response.code.must_be_kind_of Fixnum
+        @response.location.must_be_kind_of String
+      end
+    end
+
     it 'should be non destructive to the caller' do
       @original_create_job_service = Heracles::Wrapper.create_job_service
 
