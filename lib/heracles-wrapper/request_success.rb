@@ -5,7 +5,7 @@ require 'delegate'
 
 module Heracles
   module Wrapper
-    class SuccessfulResponse < DelegateClass(RestClient::Response)
+    class RequestSuccess < DelegateClass(RestClient::Response)
       attr_reader(
         :job_id,
         :location,

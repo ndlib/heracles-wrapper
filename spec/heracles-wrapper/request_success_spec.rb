@@ -1,13 +1,13 @@
 require File.expand_path(
-  '../../../lib/heracles-wrapper/successful_response', __FILE__
+  '../../../lib/heracles-wrapper/request_success', __FILE__
 )
 require File.expand_path('../../../lib/heracles-wrapper/config', __FILE__)
 require 'minitest/autorun'
 require 'webmock/minitest'
 require 'ostruct'
 
-describe 'Heracles::Wrapper::SuccessfulResponse' do
-  subject { Heracles::Wrapper::SuccessfulResponse.new(http_response) }
+describe 'Heracles::Wrapper::RequestSuccess' do
+  subject { Heracles::Wrapper::RequestSuccess.new(http_response) }
   let(:expected_job_id) { 1234 }
   let(:expected_messages) { ['one message'] }
   let(:expected_code) { 201 }

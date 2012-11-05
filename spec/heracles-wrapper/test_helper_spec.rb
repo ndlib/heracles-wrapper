@@ -37,7 +37,7 @@ describe Heracles::Wrapper::TestHelper do
   end
 
   describe "#with_heracles_service_stub" do
-    it 'should return an object that adheres to successful_response' do
+    it 'should return an object that adheres to request_success' do
       with_heracles_service_stub(:create_job) do
         @response = Heracles::Wrapper.service(
           :create_job, input_parameters
