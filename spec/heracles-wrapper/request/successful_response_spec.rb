@@ -17,7 +17,7 @@ describe 'Heracles::Wrapper::Request::SuccessfulResponse' do
       :body => %(
         {
           "job_id": #{expected_job_id},
-          "messages": #{expected_messages}
+          "messages": #{expected_messages.inspect}
         }
       ),
       :headers => { :location => expected_location },
