@@ -9,12 +9,14 @@ module Heracles
       class SuccessfulResponse < DelegateClass(RestClient::Response)
         attr_reader(
           :job_id,
-          :location
+          :location,
+          :code
         )
         def initialize(http_response)
           super(http_response)
           @job_id = JSON.parse(http_response.body).fetch('job_id').to_i
           @location = http_response.headers.fetch(:location)
+          @code = http_response.code
         end
       end
     end
