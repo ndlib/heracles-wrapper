@@ -14,7 +14,9 @@ describe 'Heracles::Wrapper::Request::SuccessfulResponse' do
     OpenStruct.new(
       :body => %({"job_id": #{expected_job_id}}),
       :headers => { location: expected_location }
-    )
+    ).tap { |obj|
+      def obj.foo_bar; 'Baz'; end
+    }
   }
 
   it 'has #job_id' do
@@ -23,5 +25,9 @@ describe 'Heracles::Wrapper::Request::SuccessfulResponse' do
 
   it 'has #location' do
     subject.location.must_equal expected_location
+  end
+
+  it 'delegates everything else to the http_response' do
+    subject.foo_bar.must_equal 'Baz'
   end
 end

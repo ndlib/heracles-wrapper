@@ -2,6 +2,7 @@ require 'uri'
 require 'json'
 require 'rest-client'
 require File.expand_path("../exceptions", File.dirname(__FILE__))
+require File.expand_path("successful_response", File.dirname(__FILE__))
 
 
 module Heracles
@@ -57,14 +58,6 @@ class Heracles::Wrapper::Request::CreateJob
   end
   protected
   def decorate_response(response)
-    # This is dirty but it highlights the expected API.
-    def response.job_id
-      JSON.parse(body).fetch('job_id').to_i
-    end
-
-    def response.location
-      headers.fetch(:location)
-    end
-    response
+    Heracles::Wrapper::Request::SuccessfulResponse.new(response)
   end
 end
