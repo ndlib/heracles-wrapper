@@ -25,6 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "morphine"
   gem.add_runtime_dependency "json" if RUBY_VERSION =~ /\A1\.8/
   gem.add_development_dependency "webmock"
+  gem.add_development_dependency "debugger" if RUBY_VERSION !~ /\A1\.8/
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "minitest-matchers"
 
