@@ -59,7 +59,7 @@ class Heracles::Wrapper::Request::CreateJob
   def decorate_response(response)
     # This is dirty but it highlights the expected API.
     def response.job_id
-      JSON.parse(body)['job_id'].to_i
+      JSON.parse(body).fetch('job_id').to_i
     end
 
     def response.location

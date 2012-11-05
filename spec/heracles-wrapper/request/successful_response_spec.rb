@@ -13,11 +13,15 @@ describe 'Heracles::Wrapper::Request::SuccessfulResponse' do
   let(:http_response) {
     OpenStruct.new(
       :body => %({"job_id": #{expected_job_id}}),
-      :headers => { locations: expected_location }
+      :headers => { location: expected_location }
     )
   }
 
-  it 'should have #job_id' do
+  it 'has #job_id' do
     subject.job_id.must_equal expected_job_id
+  end
+
+  it 'has #location' do
+    subject.location.must_equal expected_location
   end
 end
