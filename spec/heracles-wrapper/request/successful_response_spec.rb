@@ -20,7 +20,7 @@ describe 'Heracles::Wrapper::Request::SuccessfulResponse' do
           "messages": #{expected_messages}
         }
       ),
-      :headers => { location => expected_location },
+      :headers => { :location => expected_location },
       :code => expected_code
     ).tap { |obj|
       def obj.foo_bar; 'Baz'; end
