@@ -6,10 +6,12 @@ require 'minitest/autorun'
 describe Heracles::Wrapper::NotificationResponse do
   subject { Heracles::Wrapper::NotificationResponse.new(params) }
   describe 'well formed response' do
-    let(:expected_job_id) { 1234 }
+    let(:expected_job_status) { 'ok'}
+    let(:expected_job_id) { '1234' }
     let(:params) {
       {
         :job_id => expected_job_id,
+        :job_status => expected_job_status,
         :notification_payload => {
           :hello => { :world => [{:foo => 1},{:foo => 2},{:bar => 3}]}
         }
@@ -23,8 +25,11 @@ describe Heracles::Wrapper::NotificationResponse do
       )
     end
 
+    it 'should have #job_status' do
+      subject.job_status.must_equal expected_job_status.to_sym
+    end
     it 'should have #job_id' do
-      subject.job_id.must_equal expected_job_id
+      subject.job_id.must_equal expected_job_id.to_i
     end
 
     it 'should have #one_time_key' do
