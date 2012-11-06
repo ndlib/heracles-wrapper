@@ -1,6 +1,6 @@
 require 'method_decorators'
 require 'method_decorators/decorators/precondition'
-require File.expand_path("exceptions", File.dirname(__FILE__))
+
 module Heracles
   module Wrapper
   end
