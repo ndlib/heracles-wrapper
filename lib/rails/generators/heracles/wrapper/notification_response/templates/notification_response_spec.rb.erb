@@ -1,0 +1,31 @@
+require 'spec_helper'
+
+describe <%= class_name %> do
+  subject { <%= class_name %>.new(params) }
+  let(:params) {
+    {
+      :job_id => '1234',
+      :one_time_notification_key => 'abc',
+      :job_status => 'ok',
+      :notification_payload => expected_notification_payload
+    }
+  }
+  let(:expected_notification_payload) { {:hello => 'world'} }
+
+  describe 'standard behavior' do
+    it 'should have #job_id' do
+      subject.job_id.should == params.fetch(:job_id).to_i
+    end
+    it 'should have #job_status' do
+      subject.job_status.should == params.fetch(:job_status).to_sym
+    end
+    it 'should have #notification_payload' do
+      subject.notification_payload.should == params.
+        fetch(:notification_payload).to_sym
+    end
+    it 'should behave as a the :notification_payload hash' do
+      subject[:hello].should == params[:notification_payload][:hello]
+      subject.fetch(:hello).should == params[:notification_payload][:hello]
+    end
+  end
+end

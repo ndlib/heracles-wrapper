@@ -1,8 +1,9 @@
 Description:
-    Generate the config for Heracles
+    Generate a notification response for Heracles
 
 Example:
-    rails generate heracles:wrapper:install -k <API_KEY_FOR_PRODUCTION_HERACLES>
+    rails generate heracles:wrapper:notification_response <NAME>
 
     This will create:
-        config/initializers/heracles-wrapper.rb
+        app/models/<NAME>.rb
+        spec/models/<NAME>.rb
