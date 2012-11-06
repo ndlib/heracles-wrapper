@@ -10,9 +10,18 @@ describe Heracles::Wrapper::NotificationResponse do
     let(:params) {
       {
         :job_id => expected_job_id,
-        :notification_payload => {}
+        :notification_payload => {
+          :hello => { :world => [{:foo => 1},{:foo => 2},{:bar => 3}]}
+        }
       }
     }
+
+    it 'should extract methods based on keys' do
+      subject.must_respond_to :fetch
+      subject.fetch(:hello).must_equal(
+        params.fetch(:notification_payload).fetch(:hello)
+      )
+    end
 
     it 'should have #job_id' do
       subject.job_id.must_equal expected_job_id
