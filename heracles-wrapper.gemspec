@@ -29,5 +29,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "debugger" if RUBY_VERSION !~ /\A1\.8/
   gem.add_development_dependency "minitest"
   gem.add_development_dependency "minitest-matchers"
+  gem.add_development_dependency "rails"
 
 end
