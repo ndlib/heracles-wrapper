@@ -32,7 +32,10 @@ module Heracles::Wrapper
       wrap_service_with_proxy(service_name) do |proxy|
 
         response[:job_id] ||= RESPONSE_JOB_ID
-        response[:location] ||= "http://localhost:8080/jobs/#{response[:job_id]}"
+        response[:location] ||= File.join(
+          Heracles::Wrapper.config.heracles_base_url,
+          "/jobs/#{response[:job_id]}"
+        )
         response[:code] ||= RESPONSE_CODE
         response[:messages] ||= []
 
