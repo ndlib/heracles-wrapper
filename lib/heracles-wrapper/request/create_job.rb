@@ -54,7 +54,7 @@ class Heracles::Wrapper::Request::CreateJob
       )
     )
   rescue RestClient::Exception => e
-    raise Heracles::Wrapper::RequestFailure.new(e)
+    raise Heracles::Wrapper::RequestFailure.new(e.response)
   end
   protected
   def decorate_response(response)

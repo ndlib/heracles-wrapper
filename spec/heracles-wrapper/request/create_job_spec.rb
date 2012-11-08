@@ -67,6 +67,27 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
         subject.call
       }.must_raise Heracles::Wrapper::RequestFailure
     end
+
+    it 'handles 404' do
+      stub_request(:post, subject.url.to_s).to_return(:status => 404)
+      lambda {
+        subject.call
+      }.must_raise Heracles::Wrapper::RequestFailure
+    end
+
+    it 'handles 401' do
+      stub_request(:post, subject.url.to_s).to_return(:status => 401)
+      lambda {
+        subject.call
+      }.must_raise Heracles::Wrapper::RequestFailure
+    end
+
+    it 'handles 500' do
+      stub_request(:post, subject.url.to_s).to_return(:status => 500)
+      lambda {
+        subject.call
+      }.must_raise Heracles::Wrapper::RequestFailure
+    end
   end
 
   it 'has a #url' do
