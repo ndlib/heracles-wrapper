@@ -16,7 +16,9 @@ describe 'Heracles::Wrapper::RequestSuccess' do
     OpenStruct.new(
       :body => %(
         {
-          "job_id": #{expected_job_id},
+          "job": {
+            "id": #{expected_job_id}
+          },
           "messages": #{expected_messages.inspect}
         }
       ),

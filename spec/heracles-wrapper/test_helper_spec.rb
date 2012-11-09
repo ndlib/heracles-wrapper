@@ -73,7 +73,7 @@ describe Heracles::Wrapper::TestHelper do
       ).
       to_return(
         {
-          :body => %({"job_id" : "#{expected_job_id}"}),
+          :body => %({"job" : {"id" : "#{expected_job_id}"}}),
           :status => expected_code,
           :headers => {
             :content_type => 'application/json',

@@ -15,7 +15,7 @@ module Heracles
       def initialize(http_response)
         super(http_response)
         @json = JSON.parse(http_response.body)
-        @job_id = @json.fetch('job_id').to_i
+        @job_id = @json.fetch('job').fetch('id').to_i
         @messages = @json.fetch('messages',[]).to_a
         @location = http_response.headers.fetch(:location)
         @code = http_response.code
