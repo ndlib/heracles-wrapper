@@ -116,8 +116,10 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
         subject.as_json.must_equal(
           {
             :api_key => expected_api_key,
-            :workflow_name => expected_workflow_name,
-            :parameters => {}
+            :job => {
+              :workflow_name => expected_workflow_name,
+              :parameters => {}
+            }
           }
         )
       end
@@ -129,9 +131,11 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
         subject.as_json.must_equal(
           {
             :api_key => expected_api_key,
-            :workflow_name => expected_workflow_name,
-            :parent_job_id => expected_parent_job_id,
-            :parameters => {}
+            :job => {
+              :workflow_name => expected_workflow_name,
+              :parent_job_id => expected_parent_job_id,
+              :parameters => {}
+            }
           }
         )
       end
@@ -153,8 +157,10 @@ describe 'Heracles::Wrapper::Request::CreateJob' do
         subject.as_json.must_equal(
           {
             :api_key => expected_api_key,
-            :workflow_name => expected_workflow_name,
-            :parameters => options[:parameters]
+            :job => {
+              :workflow_name => expected_workflow_name,
+              :parameters => options[:parameters]
+            }
           }
         )
       end

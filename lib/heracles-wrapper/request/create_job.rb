@@ -31,10 +31,12 @@ class Heracles::Wrapper::Request::CreateJob
   def as_json
     {
       :api_key => config.api_key,
-      :workflow_name => workflow_name,
-      :parameters => parameters
+      :job => {
+        :workflow_name => workflow_name,
+        :parameters => parameters
+      }
     }.tap {|hash|
-      hash[:parent_job_id] = parent_job_id if parent_job_id
+      hash[:job][:parent_job_id] = parent_job_id if parent_job_id
     }
   end
 
