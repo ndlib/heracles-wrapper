@@ -6,7 +6,7 @@ module Heracles::Wrapper
     RESPONSE_JOB_ID = 1234.freeze
     RESPONSE_CODE = 201.freeze
 
-    def with_heracles_service_failure_stub(service_name, messages = [])
+    def with_heracles_service_failure_stub(service_name, errors = [])
       wrap_service_with_proxy(service_name) do
         Heracles::Wrapper.send(
           "#{service_name}_service=",
@@ -18,7 +18,7 @@ module Heracles::Wrapper
               :parameters => options.fetch(:parameters, {})
             ).tap { |obj|
               def obj.call
-                raise Heracles::Wrapper::RequestFailure.new(messages)
+                raise Heracles::Wrapper::RequestFailure.new(errors)
               end
             }
           }
@@ -37,7 +37,7 @@ module Heracles::Wrapper
           "/jobs/#{response[:job_id]}"
         )
         response[:code] ||= RESPONSE_CODE
-        response[:messages] ||= []
+        response[:errors] ||= []
 
         Heracles::Wrapper.send(
           "#{service_name}_service=",

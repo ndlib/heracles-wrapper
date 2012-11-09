@@ -43,7 +43,7 @@ describe Heracles::Wrapper::TestHelper do
           :create_job, input_parameters
         ).call
         @response.job_id.must_be_kind_of Fixnum
-        @response.messages.must_be_kind_of Array
+        @response.errors.must_be_kind_of Array
         @response.code.must_be_kind_of Fixnum
         @response.location.must_be_kind_of String
       end
