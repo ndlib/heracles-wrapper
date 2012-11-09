@@ -1,6 +1,7 @@
 require 'json'
 module Heracles
   module Wrapper
+    DefaultErrorObject = Hash
     class RequestFailure < RuntimeError
       attr_reader :code, :errors, :response
       def initialize(response)
@@ -10,7 +11,7 @@ module Heracles
             JSON.parse(response.body).fetch('errors',{}) :
             {}
         rescue JSON::ParserError
-          @errors = {"errors" => "Not JSON format; See response.body"}
+          @errors = {"response" => "Not JSON format; See response.body"}
         end
         @response = response
         super("code: #{@code}")

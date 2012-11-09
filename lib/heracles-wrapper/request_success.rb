@@ -16,7 +16,7 @@ module Heracles
         super(http_response)
         @json = JSON.parse(http_response.body)
         @job_id = @json.fetch('job').fetch('id').to_i
-        @errors = @json.fetch('errors',[]).to_a
+        @errors = @json.fetch('errors',{})
         @location = http_response.headers.fetch(:location)
         @code = http_response.code
       end
