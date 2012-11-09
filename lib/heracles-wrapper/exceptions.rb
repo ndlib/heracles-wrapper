@@ -1,10 +1,15 @@
+require 'json'
 module Heracles
   module Wrapper
     class RequestFailure < RuntimeError
       attr_reader :code, :messages, :response
       def initialize(response)
         @code = response.respond_to?(:code) ? response.code : 500
-        @messages = response.respond_to?(:body) ? response.body : ''
+        begin
+          @messages = response.respond_to?(:body) ? JSON.parse(response.body) : {}
+        rescue JSON::ParserError
+          @messages = {"Response" => "Not JSON format; See response.body"}
+        end
         @response = response
         super("code: #{@code}")
       end
