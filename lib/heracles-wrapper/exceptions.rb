@@ -8,7 +8,7 @@ module Heracles
         begin
           @messages = response.respond_to?(:body) ? JSON.parse(response.body) : {}
         rescue JSON::ParserError
-          @messages = {"Response" => "Not JSON format; See response.body"}
+          @messages = {"errors" => "Not JSON format; See response.body"}
         end
         @response = response
         super("code: #{@code}")

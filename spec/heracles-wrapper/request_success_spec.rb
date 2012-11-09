@@ -9,7 +9,7 @@ require 'ostruct'
 describe 'Heracles::Wrapper::RequestSuccess' do
   subject { Heracles::Wrapper::RequestSuccess.new(http_response) }
   let(:expected_job_id) { 1234 }
-  let(:expected_messages) { ['one message'] }
+  let(:expected_errors) { ['one message'] }
   let(:expected_code) { 201 }
   let(:expected_location) { 'http://somewhere.over/the/rainbown' }
   let(:http_response) {
@@ -19,7 +19,7 @@ describe 'Heracles::Wrapper::RequestSuccess' do
           "job": {
             "id": #{expected_job_id}
           },
-          "messages": #{expected_messages.inspect}
+          "errors": #{expected_errors.inspect}
         }
       ),
       :headers => { :location => expected_location },
@@ -41,8 +41,8 @@ describe 'Heracles::Wrapper::RequestSuccess' do
     subject.location.must_equal expected_location
   end
 
-  it 'has #messages' do
-    subject.messages.must_equal expected_messages
+  it 'has #errors' do
+    subject.errors.must_equal expected_errors
   end
 
   it 'delegates everything else to the http_response' do
