@@ -8,10 +8,12 @@ describe Heracles::Wrapper::NotificationResponse do
   describe 'well formed response' do
     let(:expected_job_status) { 'ok'}
     let(:expected_job_id) { '1234' }
+    let(:expected_one_time_notification_key) { '1234' }
     let(:params) {
       {
         :job_id => expected_job_id,
         :job_status => expected_job_status,
+        :one_time_notification_key => expected_one_time_notification_key,
         :notification_payload => {
           :hello => { :world => [{:foo => 1},{:foo => 2},{:bar => 3}]}
         }
@@ -20,8 +22,11 @@ describe Heracles::Wrapper::NotificationResponse do
 
     it 'should extract methods based on keys' do
       subject.must_respond_to :fetch
+      subject.fetch('hello').must_equal(subject.fetch(:hello))
       subject.fetch(:hello).must_equal(
-        params.fetch(:notification_payload).fetch(:hello)
+        HashWithIndifferentAccess.new(
+          params.fetch(:notification_payload).fetch(:hello)
+        )
       )
     end
 

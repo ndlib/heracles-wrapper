@@ -1,3 +1,4 @@
+require 'active_support/core_ext/hash/indifferent_access'
 require 'method_decorators'
 require 'method_decorators/decorators/precondition'
 
@@ -19,8 +20,9 @@ class Heracles::Wrapper::NotificationResponse
     params[:job_status] &&
     params[:notification_payload].respond_to?(:to_hash)
   }
-  def initialize(params)
-    @notification_payload = params.fetch(:notification_payload).to_hash
+  def initialize(raw_params)
+    params = HashWithIndifferentAccess.new(raw_params)
+    @notification_payload = HashWithIndifferentAccess.new(params.fetch(:notification_payload))
     @job_id = params.fetch(:job_id).to_i
     @job_status = params.fetch(:job_status).to_sym
     @one_time_notification_key = params.fetch(:one_time_notification_key, nil)
