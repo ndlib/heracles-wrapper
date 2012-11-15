@@ -32,7 +32,7 @@ describe Heracles::Wrapper::NotificationResponse do
       subject.job_id.must_equal expected_job_id.to_i
     end
 
-    it 'should have #one_time_key' do
+    it 'should have #one_time_notification_key' do
       subject.must_respond_to :one_time_notification_key
     end
 
