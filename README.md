@@ -28,9 +28,9 @@ Once installed in your application use rails generate:
 
     Heracles::Wrapper.service(
       :create_job,
-      :workflow_name => 'RabbitWarren',
+      :workflow_name => <WORKFLOW_NAME>,
       :parameters => {
-        :callback_url => 'http://google.com'
+        :notification_url => 'http://google.com'
       }
     )
 
@@ -43,9 +43,9 @@ Once installed in your application use rails generate:
       let(:service) {
         Heracles::Wrapper.service(
           :create_job,
-          :workflow_name => 'RabbitWarren',
+          :workflow_name => <WORKFLOW_NAME>,
           :parameters => {
-            :callback_url => 'http://google.com'
+            :notification_url => 'http://google.com'
           }
         )
       }
