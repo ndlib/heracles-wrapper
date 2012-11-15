@@ -44,22 +44,25 @@ class Heracles::Wrapper::Request::CreateJob
   # Hits a given URL
   # Syncrhonously waits for response.
   def call
-    decorate_response(
-      RestClient.post(
-        url.to_s,
-        as_json,
-        {
-          :content_type => :json,
-          :accept => :json,
-          :verify_ssl => OpenSSL::SSL::VERIFY_NONE
-        }
-      )
-    )
+    request_decorator.call(make_request)
   rescue RestClient::Exception => e
     raise Heracles::Wrapper::RequestFailure.new(e.response)
   end
   protected
-  def decorate_response(response)
-    Heracles::Wrapper::RequestSuccess.new(response)
+
+  def make_request
+    RestClient.post(
+      url.to_s,
+      as_json,
+      {
+        :content_type => :json,
+        :accept => :json,
+        :verify_ssl => OpenSSL::SSL::VERIFY_NONE
+      }
+    )
+  end
+
+  def request_decorator
+    Heracles::Wrapper::RequestSuccess.method(:new)
   end
 end
