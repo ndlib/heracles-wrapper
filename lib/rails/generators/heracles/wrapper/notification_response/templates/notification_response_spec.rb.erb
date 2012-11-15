@@ -25,7 +25,9 @@ describe <%= class_name %> do
     end
     it 'should behave as a the :notification_payload hash' do
       subject[:hello].should == params[:notification_payload][:hello]
+      subject['hello'].should == params[:notification_payload][:hello]
       subject.fetch(:hello).should == params[:notification_payload][:hello]
+      subject.fetch('hello').should == params[:notification_payload][:hello]
     end
   end
 end

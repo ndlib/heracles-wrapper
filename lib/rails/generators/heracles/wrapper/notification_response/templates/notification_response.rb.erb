@@ -10,8 +10,7 @@ class <%= class_name %> < DelegateClass(Heracles::Wrapper::NotificationResponse)
     # The following two lines are logically equivalent
     #   @pid = fetch(:pid)
     #   @pid = params.fetch(:notification_payload).fetch(:pid)
-    #
-    # You may also want to define, at the class level the following:
-    #   attr_reader :pid
   end
+  # You may also want to define, at the class level the following:
+  #   attr_reader :pid
 end
